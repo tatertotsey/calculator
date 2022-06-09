@@ -1,49 +1,136 @@
-const currentOp = document.getElementById('currentOp');
-const nums = document.querySelectorAll('[data-num]');
-const ops = document.querySelectorAll('[data-op]');
+const currentOp = document.getElementById("currentOp"); //screen
+const lastOp = document.getElementById("lastOp"); //above curent op
+const nums = document.querySelectorAll("[data-num]");
+const ops = document.querySelectorAll("[data-op]");
+const deletebtn = document.getElementById("delete-btn");
+const clearbtn = document.getElementById("clear-btn");
+const equalButton = document.getElementById("equals");
+const pointButton = document.getElementById("point");
 
+let operand1 = "";
+let operand2 = "";
+let currentOperation = null;
+let lastOpEqual = false;
 
-function add(a, b) {
-    return a + b;
+//evaluates the expression when '=' lastOpEqual
+equalButton.addEventListener("click", calculate);
+
+//make float numbers possible with it
+//pointButton.addEventListener("click", addPoint);
+
+//event listener for numbers
+nums.forEach((num) => {
+  num.addEventListener("click", () => getNumber(num.textContent));
+});
+
+//event listener for operator buttons
+ops.forEach((op) => {
+  op.addEventListener("click", () => getOperation(op.textContent));
+});
+
+//delete last digit when click 'delete'
+deletebtn.onclick = () => {
+  currentOp.textContent = currentOp.textContent.slice(0, -1);
+
+  if (currentOp.textContent == "") {
+    currentOp.textContent = "0";
+    lastOp.textContent = lastOp.textContent.slice(0, -1);
+  }
+};
+
+//clear everything from currentOp Screen when lastOpEqual
+clearbtn.onclick = () => {
+  currentOp.textContent = "0";
+  lastOp.textContent = "";
+  operand1 = "";
+  operand2 = "";
+  currentOperation = null;
+};
+
+function getNumber(num) {
+  if (currentOp.textContent == "0" || lastOpEqual) {
+    // lastOp.textContent = "";
+    lastOpEqual = false;
+    resetScreen();
+  }
+  currentOp.textContent += num;
 }
 
-function substract(a, b) {
-    return a - b;
+//remove the first 0 after getting the number on screen
+function resetScreen() {
+  currentOp.textContent = "";
+}
+
+function getOperation(operator) {
+  operand1 = currentOp.textContent;
+  currentOperation = operator;
+  lastOp.textContent = `${operand1} ${currentOperation}`;
+  currentOp.textContent = "";
+  lastOpEqual = false;
+}
+
+function calculate() {
+  if (lastOpEqual) {
+    operand1 = currentOp.textContent;
+  }
+
+  if (!lastOpEqual) {
+    operand2 = currentOp.textContent;
+    lastOpEqual = true;
+  }
+
+  currentOp.textContent = operate(currentOperation, operand1, operand2);
+  lastOp.textContent = `${operand1} ${currentOperation} ${operand2} =`;
+
+  if (operand2 == "0") {
+    currentOp.textContent = "Err";
+  }
+}
+
+//function addPoint() {}
+
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
 }
 
 function multiply(a, b) {
-    return a * b;
+  return a * b;
+  //TODO: limit big numbers, toFixed() maybe?
 }
 
 function divide(a, b) {
+  if (a % b == 0) {
     return a / b;
-    //currentOp.innerText = opResult.toFixed(2);
+  } else {
+    let opResult = a / b;
+    currentOp.innerText = opResult.toFixed(3);
+    return currentOp.textContent;
+  }
 }
 
+function operate(operator, a, b) {
+  a = Number(a);
+  b = Number(b);
 
+  switch (operator) {
+    case "÷":
+      if (b == 0) return null;
+      else return divide(a, b);
 
-nums.forEach(num => {
-    num.addEventListener('click', () => numtoScreen(num.textContent))
-});
-  
-ops.forEach(op => {
-    op.addEventListener('click', () => operation(op.textContent))
-});
+    case "+":
+      return add(a, b);
 
+    case "-":
+      return subtract(a, b);
 
-function numtoScreen(number) {
-    if (currentOp.textContent == '0') {
-        resetScreen();
-        currentOp.textContent += number;
-    }
+    case "×":
+      return multiply(a, b);
+
+    default:
+      return null;
+  }
 }
-
-function resetScreen() {
-    currentOp.textContent = "";
-}
-
-
-// function delete() {
-//     currentOp.textContent = currentOp.textContent.slice(0, -1);
-
-// }
