@@ -80,7 +80,13 @@ button:hover {
 }
 
 button:active {
-  box-shadow: 3px 3px rgba(157, 155, 29, 0.592);
+  box-shadow: 0px 0px rgba(157, 155, 29, 0.592);
+}
+
+button[data-op],
+#equals,
+#point {
+  color: rgb(128, 0, 0);
 }
 
 .button-grid {

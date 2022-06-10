@@ -107,7 +107,7 @@ function subtract(a, b) {
 
 function multiply(a, b) {
   let opResult = a * b;
-  currentOp.innerText = (Math.round(opResult * 100) / 100).toFixed(2);
+  currentOp.innerText = parseFloat(opResult);
   return currentOp.textContent;
 }
 
