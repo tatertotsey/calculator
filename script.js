@@ -16,7 +16,7 @@ let lastOpEqual = false;
 equalButton.addEventListener("click", calculate);
 
 //make float numbers possible with it
-//pointButton.addEventListener("click", addPoint);
+pointButton.addEventListener("click", addPoint);
 
 //event listener for numbers
 nums.forEach((num) => {
@@ -67,8 +67,11 @@ function getOperation(operator) {
   lastOp.textContent = `${operand1} ${currentOperation}`;
   currentOp.textContent = "";
   lastOpEqual = false;
+
+  //how to implement the negative numbers?
 }
 
+//lastOpEqual enables us to calculate after clicking '=' more than once
 function calculate() {
   if (lastOpEqual) {
     operand1 = currentOp.textContent;
@@ -87,7 +90,12 @@ function calculate() {
   }
 }
 
-//function addPoint() {}
+function addPoint() {
+  //add point after first 0 to make it float
+  if (currentOp.textContent !== "") {
+    currentOp.textContent += ".";
+  }
+}
 
 function add(a, b) {
   return a + b;
@@ -98,8 +106,9 @@ function subtract(a, b) {
 }
 
 function multiply(a, b) {
-  return a * b;
-  //TODO: limit big numbers, toFixed() maybe?
+  let opResult = a * b;
+  currentOp.innerText = (Math.round(opResult * 100) / 100).toFixed(2);
+  return currentOp.textContent;
 }
 
 function divide(a, b) {
@@ -107,7 +116,7 @@ function divide(a, b) {
     return a / b;
   } else {
     let opResult = a / b;
-    currentOp.innerText = opResult.toFixed(3);
+    currentOp.innerText = (Math.round(opResult * 100) / 100).toFixed(3);
     return currentOp.textContent;
   }
 }

@@ -75,6 +75,14 @@ button {
   border: none;
 }
 
+button:hover {
+  background: rgba(202, 128, 128, 0.412);
+}
+
+button:active {
+  box-shadow: 3px 3px rgba(157, 155, 29, 0.592);
+}
+
 .button-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -90,8 +98,16 @@ button {
   background-color: orange;
 }
 
+#clear-btn:hover {
+  background-color: rgb(255, 145, 0);
+}
+
 #delete-btn {
   background-color: rgba(168, 50, 144, 0.542);
+}
+
+#delete-btn:hover {
+  background-color: rgba(168, 50, 154, 0.623);
 }
 
 .button {
